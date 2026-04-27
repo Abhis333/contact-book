@@ -80,7 +80,23 @@ mongo_uri = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
 db_name = os.getenv("MONGO_DB", "contact_book")
 collection_name = os.getenv("MONGO_COLLECTION", "contacts")
 
-mongo_client = MongoClient(mongo_uri, serverSelectionTimeoutMS=5000)
+try:
+    mongo_client = MongoClient(
+        mongo_uri,
+        serverSelectionTimeoutMS=5000,
+        ssl=True,
+        retryWrites=True,
+        w="majority"
+    )
+    print("✓ MongoDB client created")
+except Exception as e:
+    print(f"✗ Failed to create MongoDB client: {e}")
+    print("Using fallback client - connections will fail until valid URI is provided")
+    mongo_client = MongoClient(
+        "mongodb://localhost:27017/",
+        serverSelectionTimeoutMS=5000
+    )
+
 db = mongo_client[db_name]
 contacts = db[collection_name]
 
@@ -88,7 +104,8 @@ def mongo_ready() -> bool:
     try:
         mongo_client.admin.command("ping")
         return True
-    except Exception:
+    except Exception as e:
+        print(f"MongoDB ping failed: {e}")
         return False
 
 
@@ -217,4 +234,4 @@ def delete_contact(contact_id: str):
 if __name__ == "__main__":
     # Run with: python app.py
     # Or (recommended): flask --app app run --debug
-    app.run(host="127.0.0.1", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)
