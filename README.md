@@ -9,33 +9,47 @@ Simple Contact Book app where you can **Create, Read, Update, Delete** contacts.
 ## 1) Prerequisites
 
 - Python 3.10+ (recommended)
-- MongoDB running locally (or a MongoDB Atlas connection string)
+- MongoDB (local installation or MongoDB Atlas account)
 
-## 2) Setup (Windows PowerShell)
+## 2) Setup
 
-```powershell
+Create a virtual environment and install dependencies:
+
+```bash
 python -m venv .venv
-.\.venv\Scripts\Activate.ps1
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-Create a `.env` file (you can copy `.env.example`):
+### Database Configuration
 
-```powershell
-Copy-Item .env.example .env
+Create a `.env` file (copy from `.env.example`):
+
+```bash
+cp .env.example .env
 ```
+
+Edit `.env` with your MongoDB details:
+
+- **For MongoDB Atlas:**
+  - Sign up at [mongodb.com/atlas](https://www.mongodb.com/atlas)
+  - Create a cluster
+  - Get the connection string from "Connect > Connect your application"
+  - Update `MONGO_URI` in `.env` (it should look like `mongodb+srv://username:password@cluster.mongodb.net/contact_book`)
+
+- **For local MongoDB:**
+  - Install MongoDB locally
+  - Use default `MONGO_URI=mongodb://localhost:27017/`
 
 ## 3) Run
 
-Start MongoDB (if local), then run Flask:
+Start the Flask app:
 
-```powershell
+```bash
 python app.py
 ```
 
-Open:
-
-- http://127.0.0.1:5000
+Open http://127.0.0.1:5000 in your browser.
 
 ## Troubleshooting: CSS not loading
 

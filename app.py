@@ -80,7 +80,7 @@ mongo_uri = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
 db_name = os.getenv("MONGO_DB", "contact_book")
 collection_name = os.getenv("MONGO_COLLECTION", "contacts")
 
-mongo_client = MongoClient(mongo_uri, serverSelectionTimeoutMS=2000)
+mongo_client = MongoClient(mongo_uri, serverSelectionTimeoutMS=5000)
 db = mongo_client[db_name]
 contacts = db[collection_name]
 
