@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Contact Book</title>
+    <script>
+      (function () {
+        // If you open this file directly (not via Flask), Jinja won't render and `url_for(...)`
+        // will remain literally in the HTML. This fallback keeps CSS/JS loading in both cases.
+        var href = "{{ url_for('static', filename='styles.css') }}";
+        if (href.indexOf("{" + "{") !== -1) href = "../static/styles.css";
+        var link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.href = href;
+        document.head.appendChild(link);
+      })();
+    </script>
+  </head>
+  <body>
+    <header class="header">
+      <div class="container header__inner">
+        <div>
+          <h1 class="title">Contact Book</h1>
+          <p class="subtitle">Create, read, update, and delete contacts (CRUD)</p>
+        </div>
+        <div class="search">
+          <input id="searchInput" class="input" type="search" placeholder="Search name / phone / email..." />
+          <button id="clearSearchBtn" class="btn btn--ghost" type="button">Clear</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="container main">
+      <section class="card">
+        <div class="card__header">
+          <h2 id="formTitle" class="card__title">Add Contact</h2>
+          <p class="card__hint" id="formHint">Fill details and click "Save".</p>
+        </div>
+
+        <form id="contactForm" class="form">
+          <input type="hidden" id="contactId" />
+
+          <div class="grid">
+            <label class="field">
+              <span class="field__label">Name <span class="req">*</span></span>
+              <input id="name" class="input" type="text" placeholder="e.g. Aisha Khan" required />
+              <span class="field__error" id="nameError"></span>
+            </label>
+
+            <label class="field">
+              <span class="field__label">Phone</span>
+              <input id="phone" class="input" type="tel" placeholder="e.g. +91 98765 43210" />
+              <span class="field__error" id="phoneError"></span>
+            </label>
+
+            <label class="field">
+              <span class="field__label">Email</span>
+              <input id="email" class="input" type="email" placeholder="e.g. aisha@example.com" />
+              <span class="field__error" id="emailError"></span>
+            </label>
+
+            <label class="field">
+              <span class="field__label">Address</span>
+              <input id="address" class="input" type="text" placeholder="e.g. Bengaluru, India" />
+              <span class="field__error" id="addressError"></span>
+            </label>
+          </div>
+
+          <label class="field">
+            <span class="field__label">Notes</span>
+            <textarea id="notes" class="input textarea" rows="3" placeholder="Anything helpful..."></textarea>
+            <span class="field__error" id="notesError"></span>
+          </label>
+
+          <div class="actions">
+            <button class="btn btn--primary" type="submit" id="saveBtn">Save</button>
+            <button class="btn" type="button" id="cancelEditBtn" hidden>Cancel Edit</button>
+            <span class="status" id="statusText" role="status" aria-live="polite"></span>
+          </div>
+        </form>
+      </section>
+
+      <section class="card">
+        <div class="card__header card__header--row">
+          <h2 class="card__title">Your Contacts</h2>
+          <button id="refreshBtn" class="btn btn--ghost" type="button">Refresh</button>
+        </div>
+
+        <div class="tableWrap">
+          <table class="table" aria-label="Contacts list">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th class="hide-sm">Address</th>
+                <th class="actionsCol">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="contactsTbody">
+              <tr>
+                <td colspan="5" class="empty">Loading...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer__inner">
+        <span>Backend: Flask • Database: MongoDB • Frontend: HTML/CSS/JS</span>
+      </div>
+    </footer>
+
+    <script>
+      (function () {
+        var src = "{{ url_for('static', filename='app.js') }}";
+        if (src.indexOf("{" + "{") !== -1) src = "../static/app.js";
+        var s = document.createElement("script");
+        s.src = src;
+        document.body.appendChild(s);
+      })();
+    </script>
+  </body>
+</html>
